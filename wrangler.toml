@@ -2,8 +2,27 @@ name = "redbull-worker"
 main = "src/index.ts"
 compatibility_date = "2023-05-15"
 
+
 # Cron Triggers
 # Docs: https://developers.cloudflare.com/workers/platform/triggers/cron-triggers/
 # Configuration: https://developers.cloudflare.com/workers/wrangler/configuration/#triggers
 [triggers]
 crons = ["* * * * *"] # * * * * * = run every minute
+
+[env.main]
+kv_namespaces = [
+	{ binding = "KV", id = "64feff3a600543efa07a211a68177511" }
+]
+vars = { CAMPAIGN_ID = "43" }
+
+[env.qt]
+kv_namespaces = [
+	{ binding = "KV", id = "337c063a677e45938408ed0f95966356" }
+]
+vars = { CAMPAIGN_ID = "42" }
+
+[env.caseys]
+kv_namespaces = [
+	{ binding = "KV", id = "f8b16b28237a4f589de8fbbf6fca15c4" }
+]
+vars = { CAMPAIGN_ID = "41" }
