@@ -99,17 +99,14 @@ export default {
       const posString = position.toString();
       const oldUser = await env.KV.get(posString);
 
-      if (!oldUser) {
-        const message = `Adding #${position} ${displayName}'s score of ${score} to KV for campaign ${CAMPAIGN_ID}`;
-        console.log(message);
-        await sendWebhook(webhook, message);
-        await env.KV.put(position.toString(), displayName);
-      }
-
-      if (oldUser && displayName != oldUser) {
-        const message = `${displayName} is now #${position} with score ${score} for campaign ${CAMPAIGN_ID}`;
-        console.log(message);
-        await sendWebhook(webhook, message);
+      const message = (!oldUser)
+        ? `Adding #${position} ${displayName}'s score of ${score} to KV for campaign ${CAMPAIGN_ID}`
+        : `${displayName} is now #${position} with score ${score} for campaign ${CAMPAIGN_ID}`;
+      
+      console.log(message);
+      await sendWebhook(webhook, message);
+      
+      if (!oldUser || displayName !== oldUser) {
         await env.KV.put(position.toString(), displayName);
       }
     }
