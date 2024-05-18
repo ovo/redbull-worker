@@ -15,6 +15,7 @@
 export interface Env {
   KV: KVNamespace;
   CAMPAIGN_ID: string;
+  WEBHOOK: string;
 }
 
 export type ApiResponse = {
@@ -88,9 +89,7 @@ async function sendWebhook(url: string, content: string) {
 
 export default {
   async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
-    const { CAMPAIGN_ID } = env;
-    const webhook =
-      "https://canary.discord.com/api/webhooks/1163739950613803018/sa1AUuXRa59CeGRpq6sne03npqh3QIvsya5R_IwqsSULabZfcdFuYMUv1XGSvo2KM4_a";
+    const { CAMPAIGN_ID, WEBHOOK } = env;
     const { leaderboard } = await getLeaderboard(CAMPAIGN_ID);
     const topThree = leaderboard.slice(0, 3);
 
@@ -99,13 +98,13 @@ export default {
       const posString = position.toString();
       const oldUser = await env.KV.get(posString);
 
-      const message = (!oldUser)
+      const message = !oldUser
         ? `Adding #${position} ${displayName}'s score of ${score} to KV for campaign ${CAMPAIGN_ID}`
         : `${displayName} is now #${position} with score ${score} for campaign ${CAMPAIGN_ID}`;
-      
+
       console.log(message);
       await sendWebhook(webhook, message);
-      
+
       if (!oldUser || displayName !== oldUser) {
         await env.KV.put(position.toString(), displayName);
       }

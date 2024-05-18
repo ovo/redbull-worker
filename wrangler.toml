@@ -9,11 +9,13 @@ compatibility_date = "2023-05-15"
 [triggers]
 crons = ["* * * * *"] # * * * * * = run every minute
 
+
+# Replace with your KV ids (these don't exist)
 [env.main]
 kv_namespaces = [
 	{ binding = "KV", id = "64feff3a600543efa07a211a68177511" }
 ]
-vars = { CAMPAIGN_ID = "43" }
+vars = { CAMPAIGN_ID = "43", WEBHOOK = "" }
 
 [env.qt]
 kv_namespaces = [
