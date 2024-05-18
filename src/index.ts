@@ -103,7 +103,7 @@ export default {
         : `${displayName} is now #${position} with score ${score} for campaign ${CAMPAIGN_ID}`;
 
       console.log(message);
-      await sendWebhook(webhook, message);
+      await sendWebhook(WEBHOOK, message);
 
       if (!oldUser || displayName !== oldUser) {
         await env.KV.put(position.toString(), displayName);
